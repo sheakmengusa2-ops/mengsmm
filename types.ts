@@ -13,14 +13,23 @@ export interface User {
   referrerId?: number;
 }
 
+export interface ServiceProvider {
+  id: number;
+  name: string;
+  apiUrl: string;
+  apiKey: string;
+}
+
 export interface Service {
   id: number;
   name: string;
   category: string;
-  rate: number; // price per 1000
+  rate: number; // Price per 1000 for users
+  cost: number; // Cost per 1000 from provider
   min: number;
   max: number;
   description: string;
+  providerId?: number;
 }
 
 export enum OrderStatus {
@@ -101,4 +110,11 @@ export interface UserLevel {
     discount: number;
     color: string;
     icon: React.ElementType;
+}
+
+export interface Announcement {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
 }

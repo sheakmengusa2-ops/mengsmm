@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Rocket } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useTheme } from '../../hooks/useTheme';
 
 const RegisterPage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -16,6 +17,7 @@ const RegisterPage: React.FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+    const { siteName } = useTheme();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,7 +54,7 @@ const RegisterPage: React.FC = () => {
                     <div className="flex justify-center mb-4">
                         <div className="flex items-center text-3xl font-bold text-primary-600 dark:text-primary-400">
                             <Rocket className="w-10 h-10 mr-2" />
-                            <span>MENGSMM</span>
+                            <span>{siteName}</span>
                         </div>
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('createAccountTitle')}</h2>

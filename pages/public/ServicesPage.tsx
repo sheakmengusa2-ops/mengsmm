@@ -5,9 +5,11 @@ import { MOCK_SERVICES } from '../../constants';
 import type { Service } from '../../types';
 import Card from '../../components/ui/Card';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useTheme } from '../../hooks/useTheme';
 
 const ServicesPage: React.FC = () => {
     const { t } = useTranslation();
+    const { siteName } = useTheme();
 
     const groupedServices = MOCK_SERVICES.reduce((acc, service) => {
         if (!acc[service.category]) {
@@ -23,7 +25,7 @@ const ServicesPage: React.FC = () => {
                 <nav className="container mx-auto flex items-center justify-between p-4 lg:px-8">
                     <Link to="/" className="flex items-center text-2xl font-bold text-primary-600 dark:text-primary-400">
                         <Rocket className="w-8 h-8 mr-2" />
-                        <span>MENGSMM</span>
+                        <span>{siteName}</span>
                     </Link>
                     <div className="flex items-center space-x-4">
                          <Link to="/" className="flex items-center text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200 hover:text-primary-600">
@@ -85,7 +87,7 @@ const ServicesPage: React.FC = () => {
             <footer className="bg-gray-800 text-white mt-12">
                 <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
                     <p className="text-center text-xs leading-5 text-gray-400">
-                    &copy; 2023 MENGSMM. {t('footerRights')}
+                    &copy; 2023 {siteName}. {t('footerRights')}
                     </p>
                 </div>
             </footer>

@@ -8,6 +8,8 @@ interface ThemeContextType {
     setTheme: (theme: ThemeName) => void;
     mode: Mode;
     setMode: (mode: Mode) => void;
+    siteName: string;
+    setSiteName: (name: string) => void;
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null);
@@ -19,6 +21,7 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const [theme, setTheme] = useState<ThemeName>('indigo');
     const [mode, setMode] = useState<Mode>('light');
+    const [siteName, setSiteNameState] = useState('MENGSMM');
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('app-theme') as ThemeName;
@@ -33,6 +36,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             setMode('dark');
         }
+
+        const savedSiteName = localStorage.getItem('app-site-name');
+        if (savedSiteName) {
+            setSiteNameState(savedSiteName);
+        }
+
     }, []);
 
     useEffect(() => {
@@ -54,11 +63,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
     }, [theme, mode]);
 
+    const setSiteName = (name: string) => {
+        const newName = name.trim() || 'MENGSMM';
+        setSiteNameState(newName);
+        localStorage.setItem('app-site-name', newName);
+    };
+
     const value = {
         theme,
         setTheme,
         mode,
-        setMode
+        setMode,
+        siteName,
+        setSiteName,
     };
 
     return (

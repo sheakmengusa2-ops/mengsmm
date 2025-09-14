@@ -14,11 +14,15 @@ import WalletPage from './pages/user/WalletPage';
 import SupportTicketsPage from './pages/user/SupportTicketsPage';
 import AffiliatesPage from './pages/user/AffiliatesPage';
 import UserLevelsPage from './pages/user/UserLevelsPage';
+import AnnouncementsPage from './pages/user/AnnouncementsPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageUsersPage from './pages/admin/ManageUsersPage';
 import ManageServicesPage from './pages/admin/ManageServicesPage';
 import ManageOrdersPage from './pages/admin/ManageOrdersPage';
 import ManageTicketsPage from './pages/admin/ManageTicketsPage';
+import SettingsPage from './pages/admin/SettingsPage';
+import ManageProvidersPage from './pages/admin/ManageProvidersPage';
+import BroadcastPage from './pages/admin/BroadcastPage';
 import TicketDetailPage from './pages/shared/TicketDetailPage';
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
@@ -74,9 +78,12 @@ const AppContent: React.FC = () => {
                                 <Route path="/" element={<AdminDashboard />} />
                                 <Route path="/users" element={<ManageUsersPage />} />
                                 <Route path="/services" element={<ManageServicesPage />} />
+                                <Route path="/providers" element={<ManageProvidersPage />} />
                                 <Route path="/orders" element={<ManageOrdersPage />} />
                                 <Route path="/support-tickets" element={<ManageTicketsPage />} />
                                 <Route path="/support-tickets/:ticketId" element={<TicketDetailPage />} />
+                                <Route path="/settings" element={<SettingsPage />} />
+                                <Route path="/broadcast" element={<BroadcastPage />} />
                                 <Route path="*" element={<Navigate to="/" />} />
                             </>
                         ) : (
@@ -85,6 +92,7 @@ const AppContent: React.FC = () => {
                                 <Route path="/new-order" element={<NewOrderPage />} />
                                 <Route path="/orders" element={<OrdersPage />} />
                                 <Route path="/wallet" element={<WalletPage />} />
+                                <Route path="/announcements" element={<AnnouncementsPage />} />
                                 <Route path="/support-tickets" element={<SupportTicketsPage />} />
                                 <Route path="/support-tickets/:ticketId" element={<TicketDetailPage />} />
                                 <Route path="/affiliates" element={<AffiliatesPage />} />

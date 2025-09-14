@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import type { User, Service, Order, Transaction, Ticket, TicketMessage, UserLevelKey, UserLevel } from './types';
+import type { User, Service, ServiceProvider, Order, Transaction, Ticket, TicketMessage, UserLevelKey, UserLevel, Announcement } from './types';
 import { OrderStatus, TransactionType, TicketStatus } from './types';
 import { Medal, Gem } from 'lucide-react';
 
@@ -13,13 +13,19 @@ export const MOCK_USERS: User[] = [
   { id: 5, username: 'Michael Brown', email: 'michael.b@example.com', role: 'user', balance: 250.00, spent: 300.75, registrationDate: '2023-05-12 11:10:43', lastLogin: '2023-10-26 13:05:33', status: 'active' },
 ];
 
+export const MOCK_PROVIDERS: ServiceProvider[] = [
+  { id: 1, name: 'SMMRush API', apiUrl: 'https://smmrush.com/api/v2', apiKey: 'key_live_123abc456def' },
+  { id: 2, name: 'PeakSMM Panel', apiUrl: 'https://peaksmm.com/api/v2', apiKey: 'key_live_789ghi012jkl' },
+];
+
 export const MOCK_SERVICES: Service[] = [
-  { id: 101, name: 'Instagram Followers [High Quality]', category: 'Instagram', rate: 1.20, min: 100, max: 10000, description: 'Real-looking followers with fast delivery.' },
-  { id: 102, name: 'Instagram Likes [Instant]', category: 'Instagram', rate: 0.50, min: 50, max: 5000, description: 'High-quality likes from active profiles.' },
-  { id: 201, name: 'TikTok Views [HQ]', category: 'TikTok', rate: 0.01, min: 1000, max: 1000000, description: 'Boost your video views quickly.' },
-  { id: 202, name: 'TikTok Followers', category: 'TikTok', rate: 2.50, min: 100, max: 5000, description: 'Grow your TikTok profile audience.' },
-  { id: 301, name: 'YouTube Views [Non-Drop]', category: 'YouTube', rate: 2.00, min: 1000, max: 50000, description: 'Views from real users, guaranteed not to drop.' },
-  { id: 302, name: 'YouTube Subscribers', category: 'YouTube', rate: 15.00, min: 100, max: 1000, description: 'Increase your channel subscribers count.' },
+  { id: 101, name: 'Instagram Followers [High Quality]', category: 'Instagram', rate: 1.20, cost: 0.80, min: 100, max: 10000, description: 'Real-looking followers with fast delivery.', providerId: 1 },
+  { id: 102, name: 'Instagram Likes [Instant]', category: 'Instagram', rate: 0.50, cost: 0.35, min: 50, max: 5000, description: 'High-quality likes from active profiles.', providerId: 1 },
+  { id: 201, name: 'TikTok Views [HQ]', category: 'TikTok', rate: 0.01, cost: 0.005, min: 1000, max: 1000000, description: 'Boost your video views quickly.', providerId: 2 },
+  { id: 202, name: 'TikTok Followers', category: 'TikTok', rate: 2.50, cost: 1.90, min: 100, max: 5000, description: 'Grow your TikTok profile audience.', providerId: 2 },
+  { id: 301, name: 'YouTube Views [Non-Drop]', category: 'YouTube', rate: 2.00, cost: 1.50, min: 1000, max: 50000, description: 'Views from real users, guaranteed not to drop.', providerId: 1 },
+  { id: 302, name: 'YouTube Subscribers', category: 'YouTube', rate: 15.00, cost: 12.50, min: 100, max: 1000, description: 'Increase your channel subscribers count.' },
+  { id: 401, name: 'Manual Service - FB Page Likes', category: 'Facebook', rate: 5.00, cost: 0, min: 100, max: 1000, description: 'Likes delivered manually by our team.', providerId: undefined },
 ];
 
 export const MOCK_ORDERS: Order[] = [
@@ -59,6 +65,11 @@ export const MOCK_TICKET_MESSAGES: TicketMessage[] = [
   { id: 3004, ticketId: 2003, senderId: 2, message: 'What is the guarantee for YouTube Views [Non-Drop] service?', createdAt: '2023-10-26 11:00', isFromAdmin: false },
   { id: 3005, ticketId: 2003, senderId: 1, message: 'It has a 30-day non-drop guarantee.', createdAt: '2023-10-26 11:15', isFromAdmin: true },
   { id: 3006, ticketId: 2003, senderId: 2, message: 'Great, thank you!', createdAt: '2023-10-26 11:20', isFromAdmin: false },
+];
+
+export const MOCK_ANNOUNCEMENTS: Announcement[] = [
+  { id: 1, title: 'Welcome to MENGSMM!', content: 'We are happy to have you here. Explore our services and start boosting your social media presence today!', createdAt: '2023-10-28' },
+  { id: 2, title: 'New TikTok Services Added', content: 'We have just added new high-quality TikTok follower and view services. Check them out in the New Order page!', createdAt: '2023-10-29' },
 ];
 
 export const USER_LEVELS: Record<UserLevelKey, UserLevel> = {

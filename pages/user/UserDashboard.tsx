@@ -1,16 +1,17 @@
 
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import StatCard from '../../components/ui/StatCard';
 import Card from '../../components/ui/Card';
-import { MOCK_ORDERS } from '../../constants';
-import { DollarSign, ShoppingCart, ListChecks, ArrowRight } from 'lucide-react';
-import type { Order } from '../../types';
+import { MOCK_ORDERS, MOCK_ANNOUNCEMENTS } from '../../constants';
+import { DollarSign, ShoppingCart, ListChecks, ArrowRight, Bell, CheckCircle } from 'lucide-react';
+import type { Order, Announcement } from '../../types';
 import { OrderStatus } from '../../types';
 import { useTranslation } from '../../hooks/useTranslation';
 import { getUserLevel, getLevelDetails, getNextLevel } from '../../utils/levelUtils';
+import Button from '../../components/ui/Button';
 
 const UserLevelCard: React.FC = () => {
     const { user } = useAuth();
@@ -38,7 +39,7 @@ const UserLevelCard: React.FC = () => {
     const LevelIcon = currentLevel.icon;
 
     return (
-        <Card className="col-span-1 md:col-span-2 lg:col-span-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white">
+        <Card className="col-span-1 md:col-span-2 lg:col-span-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <LevelIcon className={`w-12 h-12 ${currentLevel.color.replace('text-', 'text-white/80')}`} />
@@ -62,6 +63,64 @@ const UserLevelCard: React.FC = () => {
     );
 };
 
+const AnnouncementsCard: React.FC<{ user: NonNullable<ReturnType<typeof useAuth>['user']> }> = ({ user }) => {
+    const { t } = useTranslation();
+    const [unreadAnnouncements, setUnreadAnnouncements] = useState<Announcement[]>([]);
+
+    useEffect(() => {
+        const readAnnouncements: number[] = JSON.parse(localStorage.getItem(`read_announcements_user_${user.id}`) || '[]');
+        const unread = MOCK_ANNOUNCEMENTS
+            .filter(a => !readAnnouncements.includes(a.id))
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setUnreadAnnouncements(unread);
+    }, [user.id]);
+
+    if (unreadAnnouncements.length === 0) {
+        return (
+            <Card className="col-span-1 lg:col-span-4">
+                <div className="flex items-center text-center justify-center h-full">
+                    <div className="p-4">
+                       <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-2" />
+                        <h3 className="font-semibold text-lg">{t('allCaughtUp')}</h3>
+                        <p className="text-sm text-gray-500">{t('noNewAnnouncements')}</p>
+                        <Link to="/announcements">
+                            <Button variant="secondary" size="sm" className="mt-4">{t('viewAnnouncementHistory')}</Button>
+                        </Link>
+                    </div>
+                </div>
+            </Card>
+        );
+    }
+
+    const latestUnread = unreadAnnouncements[0];
+
+    return (
+        <Card className="col-span-1 lg:col-span-4" title={t('latestAnnouncements')}>
+            <div className="flex items-start space-x-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-primary-500 text-white rounded-full flex items-center justify-center">
+                        <Bell className="w-6 h-6"/>
+                    </div>
+                </div>
+                <div>
+                    <h4 className="font-bold text-lg text-primary-800 dark:text-primary-200">{latestUnread.title}</h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">{latestUnread.content}</p>
+                    <p className="text-xs text-gray-500 mt-2">{latestUnread.createdAt}</p>
+                </div>
+            </div>
+             {unreadAnnouncements.length > 1 && (
+                <p className="text-center text-sm mt-4 text-gray-600 dark:text-gray-400">
+                    {t('andXMoreUnread', { count: unreadAnnouncements.length - 1 })}
+                </p>
+            )}
+             <div className="text-center mt-4">
+                <Link to="/announcements">
+                    <Button variant="primary">{t('viewAllAnnouncements')}</Button>
+                </Link>
+            </div>
+        </Card>
+    )
+}
 
 const getStatusColor = (status: OrderStatus) => {
     switch (status) {
@@ -84,9 +143,9 @@ const UserDashboard: React.FC = () => {
 
     return (
         <div className="container mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                 <UserLevelCard />
-
+                <AnnouncementsCard user={user} />
                 <StatCard 
                     title={t('currentBalance')}
                     value={`$${user.balance.toFixed(2)}`}

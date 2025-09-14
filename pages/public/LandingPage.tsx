@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Rocket, ShieldCheck, Users, Zap, Globe, Paintbrush, Sun, Moon, Check } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useTheme } from '../../hooks/useTheme';
 import { THEMES } from '../../constants/themes';
 
+
 const LandingPage: React.FC = () => {
   const { t, setLocale, locale } = useTranslation();
-  const { theme, setTheme, mode, setMode } = useTheme();
+  const { theme, setTheme, mode, setMode, siteName } = useTheme();
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/embed/FRYfyREIf30?rel=0');
+
+  useEffect(() => {
+    const videoId = localStorage.getItem('landingPageVideoId');
+    if (videoId) {
+      setVideoUrl(`https://www.youtube.com/embed/${videoId}?rel=0`);
+    }
+  }, []);
 
 
   const handleSetLocale = (newLocale: 'en' | 'km') => {
@@ -37,12 +46,13 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+      
       <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5 flex items-center text-2xl font-bold text-primary-600">
               <Rocket className="w-8 h-8 mr-2" />
-              <span>MENGSMM</span>
+              <span>{siteName}</span>
             </a>
           </div>
           <div className="lg:flex lg:flex-1 lg:justify-end items-center space-x-2 sm:space-x-4">
@@ -149,6 +159,30 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
+        <div className="py-24 sm:py-32">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">{t('seeHowItWorks')}</h2>
+              <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-400">{t('seeHowItWorksDesc')}</p>
+            </div>
+            <div className="mt-16 flow-root">
+              <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+                <div className="relative aspect-video overflow-hidden rounded-lg shadow-xl ring-1 ring-gray-900/10">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src={videoUrl}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <div className="bg-white dark:bg-gray-800 py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
@@ -179,7 +213,7 @@ const LandingPage: React.FC = () => {
       <footer className="bg-gray-800 text-white">
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
             <p className="text-center text-xs leading-5 text-gray-400">
-            &copy; 2023 MENGSMM. {t('footerRights')}
+            &copy; 2023 {siteName}. {t('footerRights')}
             </p>
         </div>
       </footer>
